@@ -1,0 +1,128 @@
+[
+    {
+        "name": "OCID",
+        "index": { "ocid": 1 }
+    },
+    {
+        "name": "total_amount",
+        "index": { "compiledRelease.total_amount": 1 }
+    },
+    {
+        "name": "awards_suppliers_id",
+        "index": { "compiledRelease.awards.suppliers.id": 1 }
+    },
+    {
+        "name": "awards_suppliers_name",
+        "index": { "compiledRelease.awards.suppliers.name": 1 }
+    },
+    {
+        "name": "buyer_id",
+        "index": { "compiledRelease.buyer.id": 1 }
+    },
+    {
+        "name": "buyer_name",
+        "index": { "compiledRelease.buyer.name": 1 }
+    },
+    {
+        "name": "parties_id",
+        "index": { "compiledRelease.parties.id": 1 }
+    },
+    {
+        "name": "parties_name",
+        "index": { "compiledRelease.parties.name": 1 }
+    },
+    {
+        "name": "parties_memberOf_id",
+        "index": { "compiledRelease.parties.memberOf.id": 1 }
+    },
+    {
+        "name": "parties_memberOf_name",
+        "index": { "compiledRelease.parties.memberOf.name": 1 }
+    },
+    {
+        "name": "contactPoint_id",
+        "index": { "compiledRelease.parties.contactPoint.id": 1 }
+    },
+    {
+        "name": "contactPoint_name",
+        "index": { "compiledRelease.parties.contactPoint.name": 1 }
+    },
+    {
+        "name": "contracts_id",
+        "index": { "compiledRelease.contracts.id": 1 }
+    },
+    {
+        "name": "contracts_startDate",
+        "index": { "compiledRelease.contracts.period.startDate": 1 }
+    },
+    {
+        "name": "contracts_endDate",
+        "index": { "compiledRelease.contracts.period.endDate": 1 }
+    },
+    {
+        "name": "contracts_amount",
+        "index": { "compiledRelease.contracts.value.amount": 1 }
+    },
+    {
+        "name": "tender_procurementMethod",
+        "index": { "compiledRelease.tender.procurementMethod": 1 }
+    },
+    {
+        "name": "tender_procurementMethodMxCnet",
+        "index": { "compiledRelease.tender.procurementMethodMxCnet": 1 }
+    },
+    {
+        "name": "memberOf_total_amount",
+        "index": {"compiledRelease.parties.memberOf.id":1,"compiledRelease.total_amount":1}
+    },
+    {
+        "name": "suppliers_total_amount",
+        "index": {"compiledRelease.awards.suppliers.id":1,"compiledRelease.total_amount":1}
+    },
+    {
+        "name": "caassda",
+        "index": {"compiledRelease.contracts.period.startDate": 1, "compiledRelease.contracts.period.endDate": 1, "compiledRelease.tender.procurementMethodMxCnet": 1, "compiledRelease.total_amount": 1},
+        "options": {"name": "caassda"}
+    },
+    {
+        "name": "caassdasinpm",
+        "index": {"compiledRelease.contracts.period.startDate": 1, "compiledRelease.contracts.period.endDate": 1, "compiledRelease.total_amount": 1},
+        "options": {"name": "caassdasinpm"}
+    },
+    {
+        "name": "caassda-sintotal",
+        "index": {"compiledRelease.contracts.period.startDate": 1, "compiledRelease.contracts.period.endDate": 1, "compiledRelease.tender.procurementMethodMxCnet": 1},
+        "options": {"name": "caassda-sintotal"}
+    },
+    {
+        "name": "contracts_title",
+        "index": {"compiledRelease.contracts.title": "text"},
+        "options": {"default_language": "none"}
+    },
+    {
+        "name": "contracts_startDate_endDate",
+        "index": {"compiledRelease.contracts.period.startDate" : 1, "compiledRelease.contracts.period.endDate": 1},
+        "options": {"name": "cpsd-cped", "sparse": true}
+    },
+    {
+        "name": "contracts_dateSigned",
+        "index": { "compiledRelease.contracts.dateSigned": 1 }
+    },
+    {
+        "name": "party_type_amount",
+        "index": {"compiledRelease.parties.id": 1, "compiledRelease.parties.details.type": 1, "compiledRelease.total_amount": 1},
+        "options": {"name": "party_type_amount"}
+    },
+    {
+        "name": "hidden",
+        "index": {"hidden" : 1}
+    },
+    {
+        "name": "date",
+        "index": { "compiledRelease.date": 1 }
+    },
+    {
+        "name": "source_id",
+        "index": { "compiledRelease.source.id": 1 }
+    }
+]
