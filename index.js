@@ -4,7 +4,8 @@ const parseIndexes = require('./lib/parser');
 const createIndex = require('./lib/indexer');
 
 const optionDefinitions = [
-    { name: 'uri', alias: 'u', type: String, defaultValue: 'localhost:27017' },
+    { name: 'host', alias: 'h', type: String, defaultValue: 'localhost' },
+    { name: 'port', alias: 'p', type: String, defaultValue: '27017' },
     { name: 'database', alias: 'd', type: String },
     { name: 'collection', alias: 'c', type: String },
     { name: 'file', alias: 'f', type: String }
@@ -20,7 +21,7 @@ if(!args.file) {
     process.exit(1);
 }
 
-const db_uri = args.uri;
+const db_uri = 'mongodb://' + args.host + ':' + args.port;
 const client = new MongoClient(db_uri, {useUnifiedTopology: true});
 
 client.connect(async function(err) {
