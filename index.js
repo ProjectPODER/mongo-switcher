@@ -5,12 +5,12 @@ const optionDefinitions = [
     { name: 'host', alias: 'h', type: String, defaultValue: 'localhost' },
     { name: 'port', alias: 'p', type: String, defaultValue: '27017' },
     { name: 'database', alias: 'd', type: String },
-    { name: 'origin_collection', alias: 'oc', type: String },
-    { name: 'destination_collection', alias: 'dc', type: String },
+    { name: 'origin_collection', alias: 'o', type: String },
+    { name: 'target_collection', alias: 't', type: String },
 ];
 
 const args = commandLineArgs(optionDefinitions);
-if(!args.origin_collection || !args.destination_collection) {
+if(!args.origin_collection || !args.target_collection) {
     console.log('ERROR: Please specify both origin and destination collections.');
     process.exit(1);
 }
@@ -24,18 +24,24 @@ client.connect(async function(err) {
         process.exit(1);
     }
 
-    console.log("Connected to mongo: "+args.db_uri);
+    console.log("Connected to mongo: " + db_uri);
 
     const db = client.db(args.database);
 
-    //Drop the old old destination collection
-    db.collection(args.destination_collection + '_old').drop();
+    try {
+        //Drop the old old destination collection
+        await db.collection(args.target_collection + '_old').drop();
+    }
+    catch(err) { console.log('Old database does not exist.'); }
 
-    //Rename current destination collection to old destination collection
-    db.collection(args.destination_collection).rename(args.destination_collection + '_old');
+    try {
+        //Rename current destination collection to old destination collection
+        await db.collection(args.target_collection).rename(args.target_collection + '_old');
+    }
+    catch(err) { console.log('Current database does not exist yet.'); }
 
     //Rename origin collection to destination collection
-    db.collection(args.origin_collection).rename(args.destination_collection);
+    await db.collection(args.origin_collection).rename(args.target_collection);
 
 
     client.close();
