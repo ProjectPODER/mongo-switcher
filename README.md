@@ -11,7 +11,7 @@ Parameters:
     { name: 'destination_collection', alias: 'dc', type: String },
 ```
 
-For remote renaming use `mongo_remote_switch.sh` with environment variables, this requiers allvars and can be run from jenkins.
+For remote renaming use `mongo_remote_switch.sh` with environment variables, this requires allvars and can be run from jenkins.
 
 Vars:
 ```
@@ -19,6 +19,6 @@ ORIGIN_POD=mongo-0
 DESTINATION_POD=mongo-0
 ORIGIN_DATABASE=poppins
 DESTINATION_DATABASE=poppins 
-ORIGIN_COLLECTION=records
-DESTINATION_COLLECTION=records
+ORIGIN_COLLECTION=test
+DESTINATION_COLLECTION=test
 ```
