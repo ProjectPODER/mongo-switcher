@@ -1,23 +1,17 @@
 const MongoClient = require('mongodb').MongoClient;
 const commandLineArgs = require('command-line-args');
-const parseIndexes = require('./lib/parser');
-const createIndex = require('./lib/indexer');
 
 const optionDefinitions = [
     { name: 'host', alias: 'h', type: String, defaultValue: 'localhost' },
     { name: 'port', alias: 'p', type: String, defaultValue: '27017' },
     { name: 'database', alias: 'd', type: String },
-    { name: 'collection', alias: 'c', type: String },
-    { name: 'file', alias: 'f', type: String }
+    { name: 'origin_collection', alias: 'oc', type: String },
+    { name: 'destination_collection', alias: 'dc', type: String },
 ];
 
 const args = commandLineArgs(optionDefinitions);
-if(!args.database || !args.collection) {
-    console.log('ERROR: Please specify both a database and a collection.');
-    process.exit(1);
-}
-if(!args.file) {
-    console.log('ERROR: No index file specified.');
+if(!args.origin_collection || !args.destination_collection) {
+    console.log('ERROR: Please specify both origin and destination collections.');
     process.exit(1);
 }
 
@@ -30,18 +24,19 @@ client.connect(async function(err) {
         process.exit(1);
     }
 
-    console.log("Connected to mongo.");
+    console.log("Connected to mongo: "+args.db_uri);
 
     const db = client.db(args.database);
-    const collection = db.collection(args.collection);
 
-    let indexes = parseIndexes(args.file);
+    //Drop the old old destination collection
+    db.collection(args.destination_collection + '_old').drop();
 
-    for(let i=0; i<indexes.length; i++) {
-        console.log('Creating index ' + indexes[i].name);
-        let result = await createIndex(collection, indexes[i]);
-        console.log(result);
-    }
+    //Rename current destination collection to old destination collection
+    db.collection(args.destination_collection).rename(args.destination_collection + '_old');
+
+    //Rename origin collection to destination collection
+    db.collection(args.origin_collection).rename(args.destination_collection);
+
 
     client.close();
     console.log('Done!');

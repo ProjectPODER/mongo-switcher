@@ -1,7 +1,7 @@
 {
-  "name": "mongo-indexer",
+  "name": "mongo-switcher",
   "version": "0.1.0",
-  "description": "Create indexes in mongo collections.",
+  "description": "Switch between two mongo collections.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
