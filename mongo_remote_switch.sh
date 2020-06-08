@@ -1,5 +1,3 @@
-#!/bin/sh 
-
 # ORIGIN_POD=mongo-0
 # DESTINATION_POD=mongo-0
 # ORIGIN_DATABASE=poppins
@@ -23,7 +21,7 @@ kill $PID
 ENVIRONMENT=production
 source /var/lib/jenkins/allvars
 
-kubectl port-forward $ORIGIN_POD 27017:27017
+kubectl port-forward $DESTINATION_POD 27017:27017
 PID=$!
 
 echo "Running mongo restore"
