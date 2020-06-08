@@ -9,7 +9,7 @@ Parameters:
     { name: 'database', alias: 'd', type: String },
     { name: 'origin_collection', alias: 'oc', type: String },
     { name: 'destination_collection', alias: 'dc', type: String },
-``
+```
 
 For remote renaming use `mongo_remote_switch.sh` with environment variables, this requiers allvars and can be run from jenkins.
 
