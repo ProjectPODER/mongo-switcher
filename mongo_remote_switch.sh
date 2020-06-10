@@ -12,7 +12,7 @@ source /var/lib/jenkins/allvars
 kubectl port-forward $ORIGIN_POD 27017:27017 &
 PID=$!
 # echo "Running mongo dump"
-mongodump --uri=mongodb://$POPPINS_MONGO_HOST -d $ORIGIN_DATABASE -c $ORIGIN_COLLECTION /tmp/dumps/$ORIGIN_COLLECTION
+mongodump --uri=mongodb://$POPPINS_MONGO_HOST/$ORIGIN_DATABASE -c $ORIGIN_COLLECTION /tmp/dumps/$ORIGIN_COLLECTION
 
 kill -9 $PID
 
@@ -23,7 +23,7 @@ kubectl port-forward $DESTINATION_POD 27017:27017 &
 PID=$!
 
 # echo "Running mongo restore"
-mongorestore --uri=mongodb://$POPPINS_MONGO_HOST -d $DESTINATION_DATABASE -c $ORIGIN_COLLECTION_new /tmp/dumps/$ORIGIN_COLLECTION
+mongorestore --uri=mongodb://$POPPINS_MONGO_HOST/$DESTINATION_DATABASE -c $ORIGIN_COLLECTION_new /tmp/dumps/$ORIGIN_COLLECTION
 
 rm /tmp/dumps/$ORIGIN_COLLECTION
 
