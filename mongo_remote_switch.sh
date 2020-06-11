@@ -31,7 +31,7 @@ kubectl port-forward $DESTINATION_POD 27017:27017 &
 PID=$!
 
 # echo "Running mongo restore"
-mongorestore --uri=$LOCAL_MONGODB_URI -c="${ORIGIN_COLLECTION}_new" --gzip --dir=/tmp/dumps/
+mongorestore --uri=$LOCAL_MONGODB_URI -c="${ORIGIN_COLLECTION}_new" --gzip --dir="/tmp/dumps/"
 
 rm /tmp/dumps/$ORIGIN_COLLECTION
 
