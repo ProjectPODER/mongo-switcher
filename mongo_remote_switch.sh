@@ -19,7 +19,7 @@ kubectl port-forward $ORIGIN_POD 27017:27017 &
 PID=$!
 
 # echo "Running mongo dump"
-mongodump --uri=$LOCAL_MONGODB_URI -c=$ORIGIN_COLLECTION --archive=/tmp/dumps/$ORIGIN_COLLECTION
+mongodump --uri=$LOCAL_MONGODB_URI -c=$ORIGIN_COLLECTION --out=/tmp/dumps/
 
 kill -9 $PID
 
@@ -31,17 +31,17 @@ kubectl port-forward $DESTINATION_POD 27017:27017 &
 PID=$!
 
 # echo "Running mongo restore"
-mongorestore --uri=$LOCAL_MONGODB_URI -d=poppins -c="${ORIGIN_COLLECTION}_new" --archive=/tmp/dumps/$ORIGIN_COLLECTION
+mongorestore --uri=$LOCAL_MONGODB_URI -d=poppins -c="${ORIGIN_COLLECTION}_new" --dir=/tmp/dumps/
 
 rm /tmp/dumps/$ORIGIN_COLLECTION
 
 #echo "DROP old old destination collection"
-mongo $POPPINS_MONGO_HOST --eval "db.${DESTINATION_COLLECTION}_old.drop()"
+mongo $LOCAL_MONGODB_URI --eval "db.${DESTINATION_COLLECTION}_old.drop()"
 
 #echo "Rename current destination collection to old"
-mongo $POPPINS_MONGO_HOST --eval "db.${DESTINATION_COLLECTION}.renameCollection(${DESTINATION_COLLECTION}_old)"
+mongo $LOCAL_MONGODB_URI --eval "db.${DESTINATION_COLLECTION}.renameCollection(${DESTINATION_COLLECTION}_old)"
 
 #echo "Rename new origin collection to destination collection"
-mongo $POPPINS_MONGO_HOST --eval "db.${ORIGIN_COLLECTION}_new.renameCollection(${DESTINATION_COLLECTION})"
+mongo $LOCAL_MONGODB_URI --eval "db.${ORIGIN_COLLECTION}_new.renameCollection(${DESTINATION_COLLECTION})"
 
 kill -9 $PID
