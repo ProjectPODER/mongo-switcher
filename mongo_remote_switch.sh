@@ -9,21 +9,27 @@ ENVIRONMENT=staging
 
 source /var/lib/jenkins/allvars
 
+MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
+MONGODB_CLUSTER_HOST="mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local"
+LOCAL_MONGODB_URI=${MONGODB_URI/$MONGODB_CLUSTER_HOST/localhost}
+
 kubectl port-forward $ORIGIN_POD 27017:27017 &
 PID=$!
+
 # echo "Running mongo dump"
-mongodump --uri=mongodb://$POPPINS_MONGO_HOST/$ORIGIN_DATABASE -c $ORIGIN_COLLECTION /tmp/dumps/$ORIGIN_COLLECTION
+mongodump --uri=$LOCAL_MONGODB_URI -c=$ORIGIN_COLLECTION --archive=/tmp/dumps/$ORIGIN_COLLECTION
 
 kill -9 $PID
 
 ENVIRONMENT=production
+
 source /var/lib/jenkins/allvars
 
 kubectl port-forward $DESTINATION_POD 27017:27017 &
 PID=$!
 
 # echo "Running mongo restore"
-mongorestore --uri=mongodb://$POPPINS_MONGO_HOST/$DESTINATION_DATABASE -c $ORIGIN_COLLECTION_new /tmp/dumps/$ORIGIN_COLLECTION
+mongorestore --uri=$LOCAL_MONGODB_URI -c="${ORIGIN_COLLECTION}_new" --archive=/tmp/dumps/$ORIGIN_COLLECTION
 
 rm /tmp/dumps/$ORIGIN_COLLECTION
 
