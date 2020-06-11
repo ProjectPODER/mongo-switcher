@@ -3,7 +3,7 @@
 # ORIGIN_DATABASE=poppins
 # DESTINATION_DATABASE=poppins
 # ORIGIN_COLLECTION=test
-# DESTINATION_COLLECTION=test
+# DESTINATION_COLLECTION=[records persons organizations memberships countries]
 
 ENVIRONMENT=staging
 
