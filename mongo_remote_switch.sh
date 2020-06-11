@@ -31,7 +31,7 @@ kubectl port-forward $DESTINATION_POD 27017:27017 &
 PID=$!
 
 # echo "Running mongo restore"
-mongorestore --uri=$LOCAL_MONGODB_URI -d=poppins -c="${ORIGIN_COLLECTION}_new" --dir=/tmp/dumps/poppins
+mongorestore --uri=$LOCAL_MONGODB_URI -d=poppins -c="${ORIGIN_COLLECTION}_new" --dir=/tmp/dumps/poppins/
 
 rm /tmp/dumps/$ORIGIN_COLLECTION
 
