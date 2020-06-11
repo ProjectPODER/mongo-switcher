@@ -39,9 +39,9 @@ rm -rf /tmp/dumps/
 mongo $LOCAL_MONGODB_URI --eval "db.${DESTINATION_COLLECTION}_old.drop()"
 
 #echo "Rename current destination collection to old"
-mongo $LOCAL_MONGODB_URI --eval "db.${DESTINATION_COLLECTION}.renameCollection(${DESTINATION_COLLECTION}_old)"
+mongo $LOCAL_MONGODB_URI --eval "db.${DESTINATION_COLLECTION}.renameCollection('${DESTINATION_COLLECTION}_old')"
 
 #echo "Rename new origin collection to destination collection"
-mongo $LOCAL_MONGODB_URI --eval "db.${ORIGIN_COLLECTION}_new.renameCollection(${DESTINATION_COLLECTION})"
+mongo $LOCAL_MONGODB_URI --eval "db.${ORIGIN_COLLECTION}_new.renameCollection('${DESTINATION_COLLECTION}')"
 
 kill -9 $PID
