@@ -11,7 +11,9 @@ source /var/lib/jenkins/allvars
 
 MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
 MONGODB_CLUSTER_HOST="mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local"
+REPSET="?replicaSet=MainRepSet"
 LOCAL_MONGODB_URI=${MONGODB_URI/$MONGODB_CLUSTER_HOST/localhost}
+LOCAL_MONGODB_URI=${LOCAL_MONGODB_URI/$REPSET/}
 
 kubectl port-forward $ORIGIN_POD 27017:27017 &
 PID=$!
