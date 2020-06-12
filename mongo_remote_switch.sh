@@ -43,7 +43,7 @@ function dump {
 
 function restore {
     # echo "Running mongo restore"
-    mongorestore --uri=$DESTINATION_MONGODB_URI -c="${1}_new" --drop -d=$DESTINATION_DATABASE --gzip --dir="/tmp/dumps/${ORIGIN_DATABASE}/${COLLECTION}.bson.gz"
+    mongorestore --uri=$DESTINATION_MONGODB_URI -c="${1}_new" --drop -d=$DESTINATION_DATABASE --gzip --dir="/tmp/dumps/${ORIGIN_DATABASE}/${1}.bson.gz"
 
     rm -rf /tmp/dumps/
 
