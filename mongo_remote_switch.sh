@@ -39,9 +39,7 @@ dump "countries"
 
 kubectl cp -r $ORIGIN_POD:/data/db/switcher/ /tmp/dumps/
 
-ENVIRONMENT=production
-
-source /var/lib/jenkins/allvars
+kubectl config use-context $PRODUCTION
 
 kubectl cp -r /tmp/dumps/ $DESTINATION_POD:/data/db/switcher/ 
 
