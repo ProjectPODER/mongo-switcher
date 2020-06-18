@@ -5,6 +5,29 @@
 # ORIGIN_MONGODB_URI=mongodb://localhost:27017
 # DESTINATION_MONGODB_URI=mongodb://user:pass@mongo-0.mongo:27017
 
+
+
+function dump {
+    mongodump --uri=$ORIGIN_MONGODB_URI -c=$1 --gzip --out=/tmp/dumps/
+}
+
+function restore {
+    # echo "Running mongo restore"
+    mongorestore --uri=$DESTINATION_MONGODB_URI -c="${1}_new" --drop -d=$DESTINATION_DATABASE --gzip --dir="/tmp/dumps/${ORIGIN_DATABASE}/${1}.bson.gz"
+
+    rm -rf /tmp/dumps/
+
+    #echo "DROP old old destination collection"
+    mongo $DESTINATION_MONGODB_URI --eval "db.${1}_old.drop()"
+
+    #echo "Rename current destination collection to old"
+    mongo $DESTINATION_MONGODB_URI --eval "db.${1}.renameCollection('${1}_old')"
+
+    #echo "Rename new origin collection to destination collection"
+    mongo $DESTINATION_MONGODB_URI --eval "db.${1}_new.renameCollection('${1}')"
+}
+
+
 ENVIRONMENT=staging
 
 source /var/lib/jenkins/allvars
@@ -36,23 +59,3 @@ restore "countries"
 
 
 kill -9 $PID
-
-function dump {
-    mongodump --uri=$ORIGIN_MONGODB_URI -c=$1 --gzip --out=/tmp/dumps/
-}
-
-function restore {
-    # echo "Running mongo restore"
-    mongorestore --uri=$DESTINATION_MONGODB_URI -c="${1}_new" --drop -d=$DESTINATION_DATABASE --gzip --dir="/tmp/dumps/${ORIGIN_DATABASE}/${1}.bson.gz"
-
-    rm -rf /tmp/dumps/
-
-    #echo "DROP old old destination collection"
-    mongo $DESTINATION_MONGODB_URI --eval "db.${1}_old.drop()"
-
-    #echo "Rename current destination collection to old"
-    mongo $DESTINATION_MONGODB_URI --eval "db.${1}.renameCollection('${1}_old')"
-
-    #echo "Rename new origin collection to destination collection"
-    mongo $DESTINATION_MONGODB_URI --eval "db.${1}_new.renameCollection('${1}')"
-}
