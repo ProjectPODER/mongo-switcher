@@ -37,11 +37,11 @@ dump "organizations"
 dump "memberships"
 dump "countries"
 
-kubectl cp -r $ORIGIN_POD:/data/db/switcher/ /tmp/dumps/
+kubectl cp $ORIGIN_POD:/data/db/switcher/ /tmp/dumps/
 
 kubectl config use-context $PRODUCTION
 
-kubectl cp -r /tmp/dumps/ $DESTINATION_POD:/data/db/switcher/ 
+kubectl cp /tmp/dumps/ $DESTINATION_POD:/data/db/switcher/ 
 
 restore "records"
 restore "persons"
