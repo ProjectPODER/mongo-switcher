@@ -13,11 +13,11 @@ kubectl port-forward $ORIGIN_POD 27017:27017 &
 PID=$!
 
 # echo "Running mongo dump"
-dump("records")
-dump("persons")
-dump("organizations")
-dump("memberships")
-dump("countries")
+dump "records" 
+dump "persons"
+dump "organizations"
+dump "memberships"
+dump "countries"
 
 kill -9 $PID
 
@@ -28,11 +28,11 @@ source /var/lib/jenkins/allvars
 kubectl port-forward $DESTINATION_POD 27017:27017 &
 PID=$!
 
-restore("records")
-restore("persons")
-restore("organizations")
-restore("memberships")
-restore("countries")
+restore "records"
+restore "persons"
+restore "organizations"
+restore "memberships"
+restore "countries"
 
 
 kill -9 $PID
