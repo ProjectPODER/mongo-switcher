@@ -8,32 +8,27 @@
 
 
 function dump {
-    mongodump --uri=$ORIGIN_MONGODB_URI -c=$1 --gzip --out=/tmp/dumps/
+    kubectl exec -it $ORIGIN_POD -- mongodump --uri=$ORIGIN_MONGODB_URI -c=$1 --gzip --out=/data/db/switcher/
 }
 
 function restore {
     # echo "Running mongo restore"
-    mongorestore --uri=$DESTINATION_MONGODB_URI -c="${1}_new" --drop -d=$DESTINATION_DATABASE --gzip --dir="/tmp/dumps/${ORIGIN_DATABASE}/${1}.bson.gz"
-
-    rm -rf /tmp/dumps/
+    kubectl exec -it $DESTINATION_POD -- mongorestore --uri=$DESTINATION_MONGODB_URI -c="${1}_new" --drop -d=$DESTINATION_DATABASE --gzip --dir="/data/db/switcher/${ORIGIN_DATABASE}/${1}.bson.gz"
 
     #echo "DROP old old destination collection"
-    mongo $DESTINATION_MONGODB_URI --eval "db.${1}_old.drop()"
+    kubectl exec -it $DESTINATION_POD -- mongo $DESTINATION_MONGODB_URI --eval "db.${1}_old.drop()"
 
     #echo "Rename current destination collection to old"
-    mongo $DESTINATION_MONGODB_URI --eval "db.${1}.renameCollection('${1}_old')"
+    kubectl exec -it $DESTINATION_POD -- mongo $DESTINATION_MONGODB_URI --eval "db.${1}.renameCollection('${1}_old')"
 
     #echo "Rename new origin collection to destination collection"
-    mongo $DESTINATION_MONGODB_URI --eval "db.${1}_new.renameCollection('${1}')"
+    kubectl exec -it $DESTINATION_POD -- mongo $DESTINATION_MONGODB_URI --eval "db.${1}_new.renameCollection('${1}')"
 }
 
 
 ENVIRONMENT=staging
 
 source /var/lib/jenkins/allvars
-
-kubectl port-forward $ORIGIN_POD 27017:27017 &
-PID=$!
 
 # echo "Running mongo dump"
 dump "records" 
@@ -42,14 +37,13 @@ dump "organizations"
 dump "memberships"
 dump "countries"
 
-kill -9 $PID
+kubectl cp -r $ORIGIN_POD:/data/db/switcher/ /tmp/dumps/
 
 ENVIRONMENT=production
 
 source /var/lib/jenkins/allvars
 
-kubectl port-forward $DESTINATION_POD 27017:27017 &
-PID=$!
+kubectl cp -r /tmp/dumps/ $DESTINATION_POD:/data/db/switcher/ 
 
 restore "records"
 restore "persons"
@@ -57,5 +51,4 @@ restore "organizations"
 restore "memberships"
 restore "countries"
 
-
-kill -9 $PID
+rm -rf /tmp/dumps/
