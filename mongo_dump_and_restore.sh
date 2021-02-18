@@ -4,7 +4,7 @@
 # DESTINATION_DATABASE=poppins
 # ORIGIN_MONGODB_URI=mongodb://localhost:27017
 # DESTINATION_MONGODB_URI=mongodb://user:pass@mongo-0.mongo:27017
-
+# DESTINATION_CONTEXT=$PRODUCTION
 
 
 function dump {
@@ -39,7 +39,7 @@ dump "records"
 
 kubectl cp $ORIGIN_POD:/data/db/switcher/ /tmp/dumps/
 
-kubectl config use-context $PRODUCTION
+kubectl config use-context $DESTINATION_CONTEXT
 
 kubectl cp /tmp/dumps/ $DESTINATION_POD:/data/db/switcher/ 
 

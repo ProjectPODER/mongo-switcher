@@ -1,5 +1,6 @@
 # Local and remote mongo collection switcher
 
+## Local
 For local renaming, run `node index.js` with parameters.
 
 Parameters:
@@ -11,14 +12,32 @@ Parameters:
     { name: 'destination_collection', alias: 'dc', type: String },
 ```
 
-For remote renaming use `mongo_remote_switch.sh` with environment variables, this requires allvars and can be run from jenkins.
+## Remote
+To upload data from staging to mongo run `mongo_dump_and_restore.sh`, this requires `allvars` and `env_vars` and can be run from jenkins (configured as cron every monday).
 
-Vars:
+For remote renaming use `mongo_remote_switch.sh` with environment variables, this requires `allvars` and `env_vars` and can be run from jenkins.
+
+## Poppins to staging
 ```
-ORIGIN_POD=mongo-0
-DESTINATION_POD=mongo-0
-ORIGIN_DATABASE=poppins
-DESTINATION_DATABASE=poppins 
-ORIGIN_COLLECTION=test
-DESTINATION_COLLECTION=test
+export DOCTL_TOKEN=[DIGITALOCEAN API TOKEN]
+export SSH_KEYS=[KMAJI SSH KEY]
+export DESTINATION_POD=mongo-0
+export DESTINATION_CONTEXT=`$STAGING`
+
+cp -a /var/lib/jenkins/allvars .
+
+
+bash -ex ./mongo_dump_and_restore && ./mongo_remote_switch.sh 
+```
+
+## Stagin to prod
+```
+export DOCTL_TOKEN=[DIGITALOCEAN API TOKEN]
+export SSH_KEYS=[KMAJI SSH KEY]
+export DESTINATION_POD=bigmongo-0
+export DESTINATION_CONTEXT=`$PRODUCTION`
+
+cp -a /var/lib/jenkins/allvars .
+
+bash -ex ./launch_droplet.sh
 ```
