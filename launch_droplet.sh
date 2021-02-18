@@ -22,11 +22,10 @@ echo "Copying script to ${IP} ..."
 ssh  root@${IP} mkdir -p $SCRIPT_PATH_REMOTE
 scp -rC $SCRIPT_PATH_LOCAL root@${IP}:$SCRIPT_PATH_REMOTE
 scp -rC allvars root@${IP}:$SCRIPT_PATH_REMOTE
-ssh  root@${IP} export DESTINATION_CONTEXT="${DESTINATION_CONTEXT}"
 
 echo "Launching mongo_remote_switch in ${IP} ..."
 
-ssh root@${IP} "cd $SCRIPT_PATH_REMOTE && bash -ex ./mongo_remote_switch.sh"
+ssh root@${IP} "DESTINATION_CONTEXT="${DESTINATION_CONTEXT} cd $SCRIPT_PATH_REMOTE && bash -ex ./mongo_dump_and_restore.sh"
 
 echo "Deleting ${IP}"
 doctl compute droplet delete --force --tag-name ${SCRIPT_LABEL}
