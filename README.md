@@ -17,7 +17,7 @@ To upload data from staging to mongo run `mongo_dump_and_restore.sh`, this requi
 
 For remote renaming use `mongo_remote_switch.sh` with environment variables, this requires `allvars` and `env_vars` and can be run from jenkins.
 
-## Poppins to staging
+## Poppins to staging (cron)
 ```
 export DOCTL_TOKEN=[DIGITALOCEAN API TOKEN]
 export SSH_KEYS=[KMAJI SSH KEY]
@@ -26,18 +26,21 @@ export DESTINATION_CONTEXT=`$STAGING`
 
 cp -a /var/lib/jenkins/allvars .
 
-
-bash -ex ./mongo_dump_and_restore && ./mongo_remote_switch.sh 
+bash -ex ./mongo_dump_and_restore.sh && ./mongo_remote_switch.sh 
 ```
 
-## Stagin to prod
+## Staging to prod (cron)
 ```
 export DOCTL_TOKEN=[DIGITALOCEAN API TOKEN]
 export SSH_KEYS=[KMAJI SSH KEY]
 export DESTINATION_POD=bigmongo-0
-export DESTINATION_CONTEXT=`$PRODUCTION`
+export DESTINATION_CONTEXT="do-sfo2-k8s-production"
 
 cp -a /var/lib/jenkins/allvars .
 
 bash -ex ./launch_droplet.sh
 ```
+
+## Switch prod (manual)
+export DESTINATION_CONTEXT=`$PRODUCTION`
+bash -ex ./mongo_remote_switch.sh 
