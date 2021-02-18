@@ -22,7 +22,7 @@ echo "Copying script to ${IP} ..."
 ssh  root@${IP} mkdir -p $SCRIPT_PATH_REMOTE
 scp -rC $SCRIPT_PATH_LOCAL root@${IP}:$SCRIPT_PATH_REMOTE
 scp -rC allvars root@${IP}:$SCRIPT_PATH_REMOTE
-ssh  root@${IP} export DESTINATION_POD="${DESTINATION_POD}"
+ssh  root@${IP} export DESTINATION_CONTEXT="${DESTINATION_CONTEXT}"
 
 echo "Launching mongo_remote_switch in ${IP} ..."
 
