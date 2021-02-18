@@ -1,0 +1,23 @@
+
+#launch_droplet.sh
+export SCRIPT_PATH_REMOTE="${SCRIPT_PATH_REMOTE:-/root}"
+export SCRIPT_PATH_LOCAL="${SCRIPT_PATH_LOCAL:-`pwd`/*}"
+export SCRIPT_LABEL="${SCRIPT_LABEL:-eswitch}"
+export DROPLET_REGION="${DROPLET_REGION:-sfo3}"
+export DROPLET_SIZE="${DROPLET_SIZE:-s-1vcpu-1gb}"
+export DROPLET_IMAGE="${DROPLET_IMAGE:-castai-castaikubernetes-20-04}"
+
+#mongo_remote_switch.sh
+export NOT_TESTING_MONGO=false #Change to true in production
+
+export ORIGIN_POD=mongo-0
+export DESTINATION_POD=bigmongo-0
+export ORIGIN_DATABASE=poppins
+export DESTINATION_DATABASE=poppins 
+
+MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
+MONGODB_CLUSTER_HOST="mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local"
+REPSET="?replicaSet=MainRepSet"
+LOCAL_MONGODB_URI=${MONGODB_URI/$MONGODB_CLUSTER_HOST/localhost}
+export ORIGIN_MONGODB_URI=${LOCAL_MONGODB_URI/$REPSET/}
+export DESTINATION_MONGODB_URI=$ORIGIN_MONGODB_URI
