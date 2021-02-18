@@ -12,7 +12,7 @@ export ORIGIN_POD="fast-poppins-0 -c fast-poppins-local-mongo"
 export ORIGIN_DATABASE=poppins
 export DESTINATION_DATABASE=poppins 
 
-MONGODB_USERPASS="$(kubectl get secret mongo-userpass -o=jsonpath --template={.data.MONGODB_USERPASS} | base64 --decode)"
+MONGODB_USERPASS="$(kubectl get secret mongo-userpass -o=jsonpath --template={.data.MONGO_USERPASS} | base64 --decode)"
 MONGODB_CLUSTER_HOST="localhost:27017"
 REPSET="?replicaSet=MainRepSet"
 LOCAL_MONGODB_URI="mongodb://${MONGODB_USERPASS}:${MONGODB_CLUSTER_HOST}"
