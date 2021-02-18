@@ -12,9 +12,14 @@ export ORIGIN_POD="fast-poppins-0 -c fast-poppins-local-mongo"
 export ORIGIN_DATABASE=poppins
 export DESTINATION_DATABASE=poppins 
 
-MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
-MONGODB_CLUSTER_HOST="mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local"
+MONGODB_USERPASS="$(kubectl get secret mongodb-userpass -o=jsonpath --template={.data.MONGODB_USERPASS} | base64 --decode)"
+MONGODB_CLUSTER_HOST="localhost:27017"
 REPSET="?replicaSet=MainRepSet"
-LOCAL_MONGODB_URI=${MONGODB_URI/$MONGODB_CLUSTER_HOST/localhost}
+LOCAL_MONGODB_URI="https://${D_MONGODB_USERPASS}:${D_MONGODB_CLUSTER_HOST}}"
 export ORIGIN_MONGODB_URI=${LOCAL_MONGODB_URI/$REPSET/}
-export DESTINATION_MONGODB_URI=$ORIGIN_MONGODB_URI
+
+D_MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
+D_MONGODB_CLUSTER_HOST="mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local"
+D_REPSET="?replicaSet=MainRepSet"
+D_LOCAL_MONGODB_URI=${MONGODB_URI/$MONGODB_CLUSTER_HOST/localhost}
+export DESTINATION_MONGODB_URI=${D_LOCAL_MONGODB_URI/$REPSET/}
