@@ -25,7 +25,7 @@ scp -rC allvars root@${IP}:$SCRIPT_PATH_REMOTE
 
 echo "Launching mongo_remote_switch in ${IP} ..."
 
-ssh root@${IP} "cd $SCRIPT_PATH_REMOTE && DESTINATION_CONTEXT="${DESTINATION_CONTEXT}" bash -ex ./mongo_dump_and_restore.sh"
+ssh root@${IP} "cd $SCRIPT_PATH_REMOTE && DESTINATION_CONTEXT="${DESTINATION_CONTEXT}" DESTINATION_POD="${DESTINATION_POD}" bash -ex ./mongo_dump_and_restore.sh"
 
 echo "Deleting ${IP}"
 doctl compute droplet delete --force --tag-name ${SCRIPT_LABEL}
