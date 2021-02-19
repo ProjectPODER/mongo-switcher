@@ -8,7 +8,7 @@ export DROPLET_SIZE="${DROPLET_SIZE:-s-1vcpu-1gb}"
 export DROPLET_IMAGE="${DROPLET_IMAGE:-castai-castaikubernetes-20-04}"
 
 #mongo_remote_switch.sh
-export ORIGIN_POD="fast-poppins-0 -c fast-poppins-local-mongo"
+export ORIGIN_POD="-c fast-poppins-local-mongo fast-poppins-0"
 export ORIGIN_DATABASE=poppins
 export DESTINATION_DATABASE=poppins 
 
