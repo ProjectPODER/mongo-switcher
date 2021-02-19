@@ -22,4 +22,4 @@ D_MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MO
 D_MONGODB_CLUSTER_HOST="mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local"
 D_REPSET="?replicaSet=MainRepSet"
 D_LOCAL_MONGODB_URI="${D_MONGODB_URI}/${DESTINATION_DATABASE}}"
-export DESTINATION_MONGODB_URI="${D_LOCAL_MONGODB_URI}/${$D_REPSET}"
+export DESTINATION_MONGODB_URI="${D_LOCAL_MONGODB_URI}/${D_REPSET}"
