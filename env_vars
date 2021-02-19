@@ -19,7 +19,6 @@ LOCAL_MONGODB_URI="mongodb://${MONGODB_CLUSTER_HOST}/${ORIGIN_DATABASE}"
 export ORIGIN_MONGODB_URI="${LOCAL_MONGODB_URI}"
 
 D_MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
-D_MONGODB_CLUSTER_HOST="mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local"
-D_REPSET="?replicaSet=MainRepSet"
-D_LOCAL_MONGODB_URI="${D_MONGODB_URI}/${DESTINATION_DATABASE}}"
-export DESTINATION_MONGODB_URI="${D_LOCAL_MONGODB_URI}/${D_REPSET}"
+export DESTINATION_MONGODB_URI="${D_MONGODB_URI}"
+
+DESTINATION_MONGODB_URI='mongodb://qqwapi:hLtBznhXmC1G36Nu@mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local:27017/poppins?replicaSet=MainRepSet/poppins}/?replicaSet=MainRepSet'
