@@ -26,11 +26,12 @@ function restore {
 echo "Start mongo_dump_and_restore"
 
 ENVIRONMENT=staging
-export DESTINATION_POD=mongo-0
-export DESTINATION_MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
 
 source allvars
 source env_vars
+
+export DESTINATION_POD=mongo-0
+export DESTINATION_MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
 
 dump "records" 
 

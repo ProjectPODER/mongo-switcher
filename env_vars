@@ -2,7 +2,7 @@
 #launch_droplet.sh
 export SCRIPT_PATH_REMOTE="${SCRIPT_PATH_REMOTE:-/root}"
 export SCRIPT_PATH_LOCAL="${SCRIPT_PATH_LOCAL:-`pwd`/*}"
-export SCRIPT_LABEL="${SCRIPT_LABEL:-eswitch}"
+export SCRIPT_LABEL="${SCRIPT_LABEL:-mongoswitch}"
 export DROPLET_REGION="${DROPLET_REGION:-sfo3}"
 export DROPLET_SIZE="${DROPLET_SIZE:-s-1vcpu-1gb}"
 export DROPLET_IMAGE="${DROPLET_IMAGE:-castai-castaikubernetes-20-04}"
