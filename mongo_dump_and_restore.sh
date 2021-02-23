@@ -41,7 +41,7 @@ kubectl cp $ORIGIN_POD:/data/db/switcher/ /tmp/dumps/
 
 kubectl config use-context $DESTINATION_CONTEXT
 
-kubectl cp /tmp/dumps/ $DESTINATION_POD:/data/db/switcher/ 
+kubectl cp /tmp/dumps/* $DESTINATION_POD:/data/db/switcher/ 
 
 restore "records"
 #restore "persons"

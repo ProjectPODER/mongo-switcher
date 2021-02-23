@@ -1,7 +1,7 @@
 source allvars
 source env_vars
 
-echo "Switching data in production. Destructive action."
+echo "Switching data in ${DESTINATION_CONTEXT}. Destructive action."
 
 kubectl config use-context $DESTINATION_CONTEXT
 
