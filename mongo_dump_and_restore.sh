@@ -23,32 +23,37 @@ function restore {
 }
 
 
-echo "Start mongo_remote_switch"
+echo "Start mongo_dump_and_restore"
 
 ENVIRONMENT=staging
 
 source allvars
 source env_vars
 
-# echo "Running mongo dump"
 dump "records" 
-#dump "persons"
-#dump "organizations"
-#dump "memberships"
-#dump "countries"
 
 kubectl cp $ORIGIN_POD:/data/db/switcher/ /tmp/dumps/
 
-kubectl config use-context $DESTINATION_CONTEXT
-
 kubectl cp /tmp/dumps/* $DESTINATION_POD:/data/db/switcher/ 
 
+export DESTINATION_POD=mongo-0
+export DESTINATION_MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
+
 restore "records"
-#restore "persons"
-#restore "organizations"
-#restore "memberships"
-#restore "countries"
+
+bash -ex mongo_remote_switch.sh records
+
+
+ENVIRONMENT=production
+
+source allvars
+
+export DESTINATION_POD=bigmongo-0
+export DESTINATION_MONGODB_URI="$(kubectl get secret bigmongodb-uri -o=jsonpath --template={.data.BIGMONGODB_URI} | base64 --decode)"
+
+restore "records"
 
 rm -rf /tmp/dumps/
 
-echo "Finished mongo_remote_switch"
+
+echo "Finished mongo_dump_and_restore"

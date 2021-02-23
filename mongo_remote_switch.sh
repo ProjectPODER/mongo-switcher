@@ -1,9 +1,7 @@
 source allvars
 source env_vars
 
-echo "Switching data in ${DESTINATION_CONTEXT}. Destructive action."
-
-kubectl config use-context $DESTINATION_CONTEXT
+echo "Switching data. Destructive action."
 
 echo "DROP old old destination collection"
 kubectl exec -it $DESTINATION_POD -- mongo $DESTINATION_MONGODB_URI --eval "db.${1}_old.drop()"

@@ -18,5 +18,5 @@ MONGODB_CLUSTER_HOST="localhost:27017"
 LOCAL_MONGODB_URI="mongodb://${MONGODB_CLUSTER_HOST}/${ORIGIN_DATABASE}"
 export ORIGIN_MONGODB_URI="${LOCAL_MONGODB_URI}"
 
-D_MONGODB_URI="$(kubectl get secret mongodb-uri -o=jsonpath --template={.data.MONGODB_URI} | base64 --decode)"
+D_MONGODB_URI="$(kubectl get secret bigmongodb-uri -o=jsonpath --template={.data.BIGMONGODB_URI} | base64 --decode)"
 export DESTINATION_MONGODB_URI="${D_MONGODB_URI}"
