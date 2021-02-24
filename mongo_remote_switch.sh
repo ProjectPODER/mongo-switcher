@@ -1,6 +1,3 @@
-source allvars
-source env_vars
-
 echo "Switching data. Destructive action."
 
 echo "DROP old old destination collection"
