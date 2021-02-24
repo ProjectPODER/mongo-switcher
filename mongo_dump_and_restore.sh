@@ -42,7 +42,7 @@ kubectl cp /tmp/dumps/* $DESTINATION_POD:/data/db/switcher/
 
 restore "records"
 
-bash -ex DESTINATION_MONGODB_URI="${DESTINATION_MONGODB_URI}" mongo_remote_switch.sh records
+DESTINATION_MONGODB_URI="${DESTINATION_MONGODB_URI}" bash -ex mongo_remote_switch.sh "records"
 
 
 ENVIRONMENT=production
