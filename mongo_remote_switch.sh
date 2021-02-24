@@ -1,3 +1,9 @@
+#When called autonomously, import variables. Else use env already set.
+if [[ -z "${DESTINATION_MONGODB_URI}" ]]; then
+    source allvars
+    source env_vars
+fi
+
 echo "Switching data. Destructive action."
 
 echo "DROP old old destination collection"
